@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { addUser, deleteUser, fetchUsers, updateUser } from "./api/pardCRUD";
-// import { fetchUsers, addUser, deleteUser, updateUser } from "./api";  // api.ts에서 함수 임포트
 
 interface User {
   id: number;
@@ -14,7 +13,7 @@ interface User {
 
 export default function HomePage() {
   const [users, setUsers] = useState<User[]>([]);
-  const [newUser, setNewUser] = useState({ name: "", age: "", part: "" });
+  const [newUser, setNewUser] = useState({ name: "", age: 0, part: "" });
   const [selectedPart, setSelectedPart] = useState<"web" | "ios" | "server">(
     "web"
   );
@@ -30,7 +29,7 @@ export default function HomePage() {
     if (!newUser.name || !newUser.age || !newUser.part) return;
     await addUser(newUser);
     fetchUser();
-    setNewUser({ name: "", age: "", part: "" });
+    setNewUser({ name: "", age: 0, part: "" });
   };
 
   const handleDeleteUser = async (id: number) => {
@@ -46,6 +45,7 @@ export default function HomePage() {
     fetchUser();
   };
   // 클백 세미나
+  
 
   useEffect(() => {
     fetchUser();
@@ -111,9 +111,8 @@ export default function HomePage() {
                     </button>
                     <button
                       className="px-6 "
-                      onClick={() => setEditingUser(user)}
-                    >
-                      🔍
+                      onClick={() => setEditingUser(user)}>
+                      ✏️
                     </button>
                   </td>
                 </tr>
@@ -151,7 +150,7 @@ export default function HomePage() {
                     ...editingUser,
                     age: Number(e.target.value),
                   })
-                : setNewUser({ ...newUser, age: e.target.value })
+                : setNewUser({ ...newUser, age: Number(e.target.value)})
             }
           />
           <input
@@ -164,21 +163,19 @@ export default function HomePage() {
                 : setNewUser({ ...newUser, part: e.target.value })
             }
           />
-          {editingUser ? (
+            {editingUser ? (
             <button
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-              onClick={handleUpdateUser}
-            >
+            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+            onClick={handleUpdateUser}>
               Update
             </button>
-          ) : (
+            ) : (
             <button
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-              onClick={handleAddUser}
-            >
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+            onClick={handleAddUser}>
               Add
             </button>
-          )}
+            )}
         </div>
       </div>
     </div>
