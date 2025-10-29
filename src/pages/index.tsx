@@ -2,25 +2,19 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { addUser, deleteUser, fetchUsers, updateUser } from "./api/pardCRUD";
-
-interface User {
-  id: number;
-  name: string;
-  age: number;
-  part: string;
-}
+import { addUser, deleteUser, fetchAllUsers, updateUser } from "./api/pardApi";
+import { UserResponse } from "@/types/user";
 
 export default function HomePage() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserResponse[]>([]);
   const [newUser, setNewUser] = useState({ name: "", age: 0, part: "" });
   const [selectedPart, setSelectedPart] = useState<"web" | "ios" | "server">(
-    "web"
+    "web" // 디폴트 값을 web으로 설정
   );
-  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [editingUser, setEditingUser] = useState<UserResponse | null>(null);
 
   const fetchUser = useCallback(() => {
-    fetchUsers(selectedPart).then((usersData) => {
+    fetchAllUsers(selectedPart).then((usersData) => {
       setUsers(usersData);
     });
   }, [selectedPart]);
@@ -52,9 +46,9 @@ export default function HomePage() {
   }, [fetchUser]);
 
   return (
-    <div className="bg-[#343434] min-h-screen flex flex-col items-center text-white p-6">
+    <div className="bg-[#343434] min-h-screen flex flex-col items-center justify-center text-white p-6">
       {/* 헤더 */}
-      <h1 className="font-serif font-extrabold text-2xl mb-4">
+      <h1 className="font-extrabold text-2xl mb-4">
         PARD - 5th Seminar CRUD
       </h1>
 
