@@ -18,7 +18,7 @@ interface User {
 // 사용자 목록 가져오기
 export const fetchUsers = async (selectedPart: "web" | "ios" | "server") => {
   try {
-    const res = await axios.get(`${API_URL}?part=${selectedPart}`);
+    const res = await axios.get<User[]>(`${API_URL}/user?part=${selectedPart}`);
     if (Array.isArray(res.data)) {
       return res.data;
     } else {
@@ -38,7 +38,12 @@ export const addUser = async (newUser: {
   part: string;
 }) => {
   try {
-    const res = await axios.post(API_URL, newUser);
+    const data = {
+      user_name: newUser.name,
+      user_age: newUser.age,
+      pard_part: newUser.part,
+    };
+    const res = await axios.post(`${API_URL}/user`, data);
     console.log("서버 응답", res);
   } catch (error) {
     console.error("사용자 추가 실패", error);
@@ -48,7 +53,7 @@ export const addUser = async (newUser: {
 // 사용자 삭제하기
 export const deleteUser = async (id: number) => {
   try {
-    await axios.delete(`${API_URL}/${id}`);
+    await axios.delete(`${API_URL}/user/${id}`);
     console.log("사용자 삭제 완료");
   } catch (error) {
     console.error("사용자 삭제 실패", error);
@@ -63,7 +68,13 @@ export const updateUser = async (updatedUser: {
   part: string;
 }) => {
   try {
-    await axios.patch(`${API_URL}/${updatedUser.id}`, updatedUser);
+    const data = {
+      user_name: updatedUser.name,
+      user_age: updatedUser.age,
+      pard_part: updatedUser.part
+    };
+
+    await axios.patch(`${API_URL}/user/${updatedUser.id}`, data);
     console.log("사용자 수정 완료");
   } catch (error) {
     console.error("사용자 수정 실패", error);
