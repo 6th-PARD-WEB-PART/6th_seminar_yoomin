@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { addUser, deleteUser, fetchAllUsers, updateUser } from "./api/pardApi";
+import { addUser, deleteUser, fetchAllUsers, updateUser } from "@/lib/pardApi";
 import { UserResponse } from "@/types/user";
 
 export default function HomePage() {
