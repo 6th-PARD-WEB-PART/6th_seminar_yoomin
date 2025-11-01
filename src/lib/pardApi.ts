@@ -49,20 +49,9 @@ export const deleteUser = async (id: number) => {
 };
 
 // 사용자 수정하기 (PATCH 사용)
-export const updateUser = async (updatedUser: {
-  id: number;
-  name: string;
-  age: number;
-  part: string;
-}) => {
+export const updateUser = async () => {
   try {
-    const data: UserRequest = {
-      user_name: updatedUser.name,
-      user_age: updatedUser.age,
-      pard_part: updatedUser.part
-    };
-
-    await http.patch<UserRequest>(`${ENDPOINT.USER}/${updatedUser.id}`, data);
+    
     console.log("사용자 수정 완료");
   } catch (error) {
     console.error("사용자 수정 실패", error);
